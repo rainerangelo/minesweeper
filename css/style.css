@@ -1,0 +1,148 @@
+/* Fonts */
+
+@font-face {
+    font-family: 'Circular Std Black';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/CircularStd-Black.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Circular Std Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/CircularStd-Bold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Circular Std Book';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/CircularStd-Book.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Circular Std Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/CircularStd-Medium.woff') format('woff');
+}
+
+/* Elements */
+
+body {
+    font-family: 'Circular Std Medium';
+}
+
+nav {
+    animation-delay: 1s;
+}
+
+h1 {
+    color: #16CA76;
+    font-family: 'Circular Std Black';
+    font-size: 2.5em;
+}
+
+h2 {
+    color: #CF664F;
+    font-family: 'Circular Std Black';
+    font-size: 1.5em;
+}
+
+p {
+    line-height: 2.5;
+    text-align: justify;
+}
+
+/* Classes */
+
+.navbar {
+    padding: 2.5em;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+.div-main {
+    height: 100vh;
+    max-width: 100%;
+}
+
+.div-centered {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.div-h-centered {
+    text-align: center;
+}
+
+.btn-difficulty {
+
+}
+
+.btn-grid {
+    background-color: #6CEFB2;
+    border-radius: 0%;
+    color: black;
+    cursor: default;
+    margin: 0.5px;
+    padding: 0;
+}
+
+.btn-grid-flag {
+    background-image: url(../images/flag-solid.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 75%;
+}
+
+.btn-grid-mine {
+    background-image: url(../images/bomb-solid.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 75%;
+}
+
+.btn-grid-zero {
+    background-color: #E9BAAF;
+}
+
+.btn-grid-number {
+    background-color: #E9BAAF;
+}
+
+.status-paragraph {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+/* IDs */
+
+#menu {
+    padding-bottom: 1.5em;
+    padding-top: 1.5em;
+}
+
+#game {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+#grid {
+    display: grid;
+    padding-bottom: 1.5em;
+    padding-top: 1.5em;
+    width: 40em;
+}
+
+#status {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1.5em;
+    padding-top: 1.5em;
+}

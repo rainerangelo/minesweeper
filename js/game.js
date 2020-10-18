@@ -11,6 +11,9 @@ const DIFFICULTY_LIST = [DIFFICULTY_EASY, DIFFICULTY_MEDIUM, DIFFICULTY_HARD];
 function render_grid(game) {
     let rendering = game.getRendering().join('');
 
+    console.log(game.getRendering().join("\n"));
+    console.log(game.getStatus());
+
     let number_of_rows = game.nrows;
     let number_of_cols = game.ncols;
 
@@ -25,11 +28,27 @@ function render_grid(game) {
     for (let i = 0; i < rendering.length; i++) {
         let button = document.createElement('button');
 
-        button.innerHTML = rendering[i];
+        switch (rendering[i]) {
+            case 'H':
+                break;
+            case 'F':
+                button.classList.add('btn-grid-flag');
+                break;
+            case 'M':
+                button.classList.add('btn-grid-mine');
+                break;
+            case '0':
+                button.classList.add('btn-grid-zero');
+                break;
+            default:
+                button.classList.add('btn-grid-number');
+                button.innerHTML = rendering[i];
+                break;
+        }
 
         button.classList.add('btn');
-        button.classList.add('btn-light');
         button.classList.add('btn-grid');
+
         button.dataset.row = Math.floor(i / number_of_cols);
         button.dataset.col = i % number_of_cols;
 
@@ -62,7 +81,8 @@ function add_grid_listeners(game) {
 
     grid.addEventListener('click', function(event) {
         if (event.target && event.target.classList.contains('btn-grid')) {
-            game.uncover(event.target.dataset.row, event.target.dataset.col);
+            game.uncover(Number(event.target.dataset.row),
+                         Number(event.target.dataset.col));
             render_grid(game);
         }
     });
@@ -71,7 +91,12 @@ function add_grid_listeners(game) {
         event.preventDefault();
 
         if (event.target && event.target.classList.contains('btn-grid')) {
-            game.mark(event.target.dataset.row, event.target.dataset.col);
+            if (event.target.classList.contains('btn-flag')) {
+                event.target.classList.remove('btn-grid-flag');
+            }
+
+            game.mark(Number(event.target.dataset.row),
+                      Number(event.target.dataset.col));
             render_grid(game);
         }
     });
@@ -82,7 +107,9 @@ function add_difficulty_listeners(game) {
 
     menu.addEventListener('click', function(event) {
         if (event.target && event.target.classList.contains('btn-difficulty')) {
-            game.init(event.target.dataset.number_of_rows, event.target.dataset.number_of_cols, event.target.dataset.number_of_mines);
+            game.init(Number(event.target.dataset.number_of_rows),
+                      Number(event.target.dataset.number_of_cols),
+                      Number(event.target.dataset.number_of_mines));
             render_grid(game);
         }
     });
