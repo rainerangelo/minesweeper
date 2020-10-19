@@ -92,6 +92,10 @@ p {
     padding: 0;
 }
 
+.btn-grid:focus {
+    box-shadow: none;
+}
+
 .btn-grid-flag {
     background-image: url(../images/flag-solid.svg);
     background-position: center;
