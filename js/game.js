@@ -106,9 +106,10 @@ function check_game_status(game) {
 
     // Display elapsed time
     if (game_status.nuncovered === 0) {
+        window.clearInterval(timer);
         timer = null;
         second = 0;
-        document.getElementById('elapsed-time').innerHTML = 0;
+        document.getElementById('elapsed-time').innerHTML = second;
     }
     else if (timer === null) {
         timer = setInterval(function() {
