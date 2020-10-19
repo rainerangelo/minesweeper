@@ -119,6 +119,16 @@ p {
     padding-right: 1.5em;
 }
 
+.modal-message {
+    padding: 1.5em;
+    text-align: center;
+}
+
+.modal.modal-static .modal-dialog {
+    transform: none !important;
+    -webkit-transform: none !important;
+}
+
 /* IDs */
 
 #menu {
