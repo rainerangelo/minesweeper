@@ -8,11 +8,22 @@ const DIFFICULTY_HARD   = [  'Hard', 20, 24, 99];
 
 const DIFFICULTY_LIST = [DIFFICULTY_EASY, DIFFICULTY_MEDIUM, DIFFICULTY_HARD];
 
+const SAFE_MOVE = 0;
+const UNSAFE_MOVE = 1;
+
+function helper_init(game, number_of_rows, number_of_cols, number_of_mines) {
+    let media_query = window.matchMedia('(max-width: 600px)');
+
+    if (media_query.matches) {
+        game.init(number_of_cols, number_of_rows, number_of_mines);
+    }
+    else {
+        game.init(number_of_rows, number_of_cols, number_of_mines);
+    }
+}
+
 function render_grid(game) {
     let rendering = game.getRendering().join('');
-
-    console.log(game.getRendering().join("\n"));
-    console.log(game.getStatus());
 
     let number_of_rows = game.nrows;
     let number_of_cols = game.ncols;
@@ -56,6 +67,48 @@ function render_grid(game) {
     }
 }
 
+let timer = null;
+let second = 0;
+
+function check_game_status(game) {
+    let game_status = game.getStatus();
+
+    if (game_status.exploded) {
+        window.clearInterval(timer);
+
+        $("#modal .modal-message").html(`<h1>You lose!</h1><p>Your time was ${second} seconds</p>`);
+        $("#modal").modal('show');
+
+        return UNSAFE_MOVE;
+    }
+    else {
+        if (game_status.done) {
+            window.clearInterval(timer);
+
+            $("#modal .modal-message").html(`<h1>You win!</h1><p>Your time was ${second} seconds</p>`);
+            $("#modal").modal('show');
+        }
+    }
+
+    // Display number of flags
+    document.getElementById('number-of-flags').innerHTML = String(game.nmines - game_status.nmarked);
+
+    // Display elapsed time
+    if (game_status.nuncovered === 0) {
+        timer = null;
+        second = 0;
+        document.getElementById('elapsed-time').innerHTML = 0;
+    }
+    else if (timer === null) {
+        timer = setInterval(function() {
+            second++;
+            document.getElementById('elapsed-time').innerHTML = second;
+        }, 1000);
+    }
+
+    return SAFE_MOVE;
+}
+
 function create_difficulty(game) {
     let menu = document.getElementById('menu');
 
@@ -83,7 +136,15 @@ function add_grid_listeners(game) {
         if (event.target && event.target.classList.contains('btn-grid')) {
             game.uncover(Number(event.target.dataset.row),
                          Number(event.target.dataset.col));
+
             render_grid(game);
+
+            if (check_game_status(game)) {
+                document.getElementById('unsafe_sound').play();
+            }
+            else {
+                document.getElementById('safe_sound').play();
+            }
         }
     });
 
@@ -97,7 +158,11 @@ function add_grid_listeners(game) {
 
             game.mark(Number(event.target.dataset.row),
                       Number(event.target.dataset.col));
+
             render_grid(game);
+            check_game_status(game);
+
+            document.getElementById('safe_sound').play();
         }
     });
 }
@@ -107,10 +172,29 @@ function add_difficulty_listeners(game) {
 
     menu.addEventListener('click', function(event) {
         if (event.target && event.target.classList.contains('btn-difficulty')) {
-            game.init(Number(event.target.dataset.number_of_rows),
-                      Number(event.target.dataset.number_of_cols),
-                      Number(event.target.dataset.number_of_mines));
+            helper_init(game, Number(event.target.dataset.number_of_rows),
+                              Number(event.target.dataset.number_of_cols),
+                              Number(event.target.dataset.number_of_mines));
+
             render_grid(game);
+            check_game_status(game);
+
+            document.getElementById('safe_sound').play();
+        }
+    });
+}
+
+function add_try_again_listener(game) {
+    let modal = document.getElementById('modal');
+
+    modal.addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('btn-try-again')) {
+            helper_init(game, game.nrows, game.ncols, game.nmines);
+
+            render_grid(game);
+            check_game_status(game);
+
+            document.getElementById('safe_sound').play();
         }
     });
 }
@@ -118,14 +202,18 @@ function add_difficulty_listeners(game) {
 function main() {
     let game = new MSGame();
 
-    // Start an easy game by default
-    game.init(DIFFICULTY_EASY[1], DIFFICULTY_EASY[2], DIFFICULTY_EASY[3]);
-
-    render_grid(game);
-
     create_difficulty(game);
 
     add_grid_listeners(game);
 
     add_difficulty_listeners(game);
+
+    add_try_again_listener(game);
+
+    // Start an easy game by default
+    helper_init(game, DIFFICULTY_EASY[1], DIFFICULTY_EASY[2], DIFFICULTY_EASY[3]);
+
+    render_grid(game);
+
+    check_game_status(game);
 }
