@@ -11,11 +11,22 @@ const DIFFICULTY_LIST = [DIFFICULTY_EASY, DIFFICULTY_MEDIUM, DIFFICULTY_HARD];
 const SAFE_MOVE = 0;
 const UNSAFE_MOVE = 1;
 
+// Set a max number of columns for mobile devices to prevent grid from being too small
+const MAX_NUMBER_OF_COLUMNS_FOR_MOBILE = 8;
+
+// This helper function is to determine if a mobile device is being used. If it is, use
+// MAX_NUMBER_OF_COLUMNS_FOR_MOBILE to restrict grid size. Otherwise, use regular sizes
+// from DIFFICULTY_* constants.
 function helper_init(game, number_of_rows, number_of_cols, number_of_mines) {
     let media_query = window.matchMedia('(max-width: 600px)');
 
     if (media_query.matches) {
-        game.init(number_of_cols, number_of_rows, number_of_mines);
+        let total = number_of_rows * number_of_cols;
+
+        // This is to ensure total can be divided exactly by MAX_NUMBER_OF_COLUMNS_FOR_MOBILE
+        total += total % MAX_NUMBER_OF_COLUMNS_FOR_MOBILE;
+
+        game.init(total / MAX_NUMBER_OF_COLUMNS_FOR_MOBILE, MAX_NUMBER_OF_COLUMNS_FOR_MOBILE, number_of_mines);
     }
     else {
         game.init(number_of_rows, number_of_cols, number_of_mines);
@@ -189,7 +200,7 @@ function add_try_again_listener(game) {
 
     modal.addEventListener('click', function(event) {
         if (event.target && event.target.classList.contains('btn-try-again')) {
-            helper_init(game, game.nrows, game.ncols, game.nmines);
+            game.init(game.nrows, game.ncols, game.nmines);
 
             render_grid(game);
             check_game_status(game);
