@@ -108,10 +108,12 @@ p {
 
 .btn-grid-zero {
     background-color: #E9BAAF;
+    pointer-events: none;
 }
 
 .btn-grid-number {
     background-color: #E9BAAF;
+    pointer-events: none;
 }
 
 .status-paragraph {
