@@ -146,9 +146,9 @@ p {
     align-items: center;
     display: flex;
     justify-content: center;
-    -webkit-text-size-adjust: none;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
+    -webkit-text-size-adjust: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
 }
 
 #grid {
