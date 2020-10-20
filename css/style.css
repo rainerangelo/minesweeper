@@ -146,6 +146,9 @@ p {
     align-items: center;
     display: flex;
     justify-content: center;
+    -webkit-text-size-adjust: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
 }
 
 #grid {
