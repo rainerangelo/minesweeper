@@ -90,6 +90,7 @@ p {
     cursor: default;
     margin: 0.5px;
     padding: 0;
+    -webkit-user-select: none;
 }
 
 .btn-grid:focus {
