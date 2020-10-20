@@ -160,23 +160,59 @@ function add_grid_listeners(game) {
         }
     });
 
-    grid.addEventListener('contextmenu', function(event) {
-        event.preventDefault();
+    // Change listener for marking depending on whether or not device is touch screen
+    if ('ontouchstart' in window || navigator.msMaxTouchPoints) {
+        grid.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
 
-        if (event.target && event.target.classList.contains('btn-grid')) {
-            if (event.target.classList.contains('btn-flag')) {
-                event.target.classList.remove('btn-grid-flag');
+        var touch_timer;
+
+        grid.addEventListener('touchstart', function(event) {
+            if (event.target && event.target.classList.contains('btn-grid')) {
+                touch_timer = window.setTimeout(function() {
+                    if (event.target.classList.contains('btn-flag')) {
+                        event.target.classList.remove('btn-grid-flag');
+                    }
+
+                    game.mark(Number(event.target.dataset.row),
+                              Number(event.target.dataset.col));
+
+                    render_grid(game);
+                    check_game_status(game);
+
+                    document.getElementById('safe_sound').play();
+
+                    event.preventDefault();
+                }, 750);
             }
+        });
 
-            game.mark(Number(event.target.dataset.row),
-                      Number(event.target.dataset.col));
+        grid.addEventListener('touchend', function(event) {
+            if (event.target && event.target.classList.contains('btn-grid')) {
+                clearTimeout(touch_timer);
+            }
+        });
+    }
+    else {
+        grid.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
 
-            render_grid(game);
-            check_game_status(game);
+            if (event.target && event.target.classList.contains('btn-grid')) {
+                if (event.target.classList.contains('btn-flag')) {
+                    event.target.classList.remove('btn-grid-flag');
+                }
 
-            document.getElementById('safe_sound').play();
-        }
-    });
+                game.mark(Number(event.target.dataset.row),
+                          Number(event.target.dataset.col));
+
+                render_grid(game);
+                check_game_status(game);
+
+                document.getElementById('safe_sound').play();
+            }
+        });
+    }
 }
 
 function add_difficulty_listeners(game) {
