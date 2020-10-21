@@ -1,4 +1,12 @@
+/**
+ * This file is the Minesweeper game engine.
+ *
+ * Provided by: Pavol Federl
+ */
 "use strict";
+
+// Turn off game engine logging
+console.log = function() {}
 
 let MSGame = (function(){
 
