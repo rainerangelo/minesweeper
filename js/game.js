@@ -10,10 +10,15 @@
 // Once the whole page loads, enter the main function of this file
 window.addEventListener('load', main);
 
-// These are the available difficulty levels for this game
+// These are the available difficulty levels for the web version of this game
 const DIFFICULTY_EASY   = [  'Easy',  8, 10, 10];
 const DIFFICULTY_MEDIUM = ['Medium', 14, 18, 40];
 const DIFFICULTY_HARD   = [  'Hard', 20, 24, 99];
+
+// These are the available difficulty levels for the mobile version of this game
+const DIFFICULTY_EASY_MOBILE   = [  'Easy', 13,  6, 10];
+const DIFFICULTY_MEDIUM_MOBILE = ['Medium', 20,  9, 35];
+const DIFFICULTY_HARD_MOBILE   = [  'Hard', 28, 13, 75];
 
 const DIFFICULTY_LIST = [DIFFICULTY_EASY, DIFFICULTY_MEDIUM, DIFFICULTY_HARD];
 
@@ -21,13 +26,10 @@ const DIFFICULTY_LIST = [DIFFICULTY_EASY, DIFFICULTY_MEDIUM, DIFFICULTY_HARD];
 const SAFE_MOVE = 0;
 const UNSAFE_MOVE = 1;
 
-// Set a max number of columns for mobile devices to prevent grid from being too small
-const MAX_NUMBER_OF_COLUMNS_FOR_MOBILE = 8;
-
 /**
- * This helper function is to determine if a mobile device is being used. If so, use
- * MAX_NUMBER_OF_COLUMNS_FOR_MOBILE to restrict grid size. Otherwise, use regular sizes from
- * available difficulty levels.
+ * This helper function is to determine if a mobile device is being used. If so, use available
+ * difficulty levels for the mobile version of this game. Otherwise, use available difficulty
+ * levels for the web version of this game.
  * @param {MSGame} game The game object with which this file communicates
  * @param {Number} number_of_rows Number of rows for the grid
  * @param {Number} number_of_cols Number of columns for the grid
@@ -39,17 +41,25 @@ function helper_init(game, number_of_rows, number_of_cols, number_of_mines) {
     let media_query = window.matchMedia('(max-width: 600px)');
 
     if (media_query.matches) {
-        let total = number_of_rows * number_of_cols;
+        let modified_difficulty = null;
 
-        // This is to ensure total squares can be divided exactly (without remainder) by
-        // MAX_NUMBER_OF_COLUMNS_FOR_MOBILE
-        total += total % MAX_NUMBER_OF_COLUMNS_FOR_MOBILE;
+        switch (number_of_rows) {
+            case DIFFICULTY_EASY[1]:
+                modified_difficulty = DIFFICULTY_EASY_MOBILE;
+                break;
+            case DIFFICULTY_MEDIUM[1]:
+                modified_difficulty = DIFFICULTY_MEDIUM_MOBILE;
+                break;
+            case DIFFICULTY_HARD[1]:
+                modified_difficulty = DIFFICULTY_HARD_MOBILE;
+                break;
+        }
 
-        game.init(total / MAX_NUMBER_OF_COLUMNS_FOR_MOBILE, MAX_NUMBER_OF_COLUMNS_FOR_MOBILE, number_of_mines);
+        game.init(modified_difficulty[1], modified_difficulty[2], modified_difficulty[3]);
     }
     else {
 
-        // Initialize game normally if not using an extra small device
+        // Initialize game normally (web version) if not using an extra small device
         game.init(number_of_rows, number_of_cols, number_of_mines);
     }
 }
