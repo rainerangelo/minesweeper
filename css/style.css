@@ -32,6 +32,10 @@
 
 body {
     font-family: 'Circular Std Medium';
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
 }
 
 nav {
@@ -132,6 +136,8 @@ p {
 
 .modal.modal-static .modal-dialog {
     transform: none !important;
+    -moz-transform: none !important;
+    -ms-transform: none !important;
     -webkit-transform: none !important;
 }
 
