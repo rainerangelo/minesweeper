@@ -250,7 +250,7 @@ function add_grid_listeners(game) {
                     document.getElementById('safe_sound').play();
 
                     event.preventDefault();
-                }, 750); // User must hold touch for 750 milliseconds to place flag
+                }, 1000); // User must hold touch for 1000 milliseconds (1 second) to place flag
             }
         });
 
