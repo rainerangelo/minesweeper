@@ -87,7 +87,7 @@ function check_game_status(game) {
     if (game_status.exploded) {
         window.clearInterval(timer);
 
-        $("#modal .modal-message").html(`<h1>You lose!</h1><p>Your time was ${second} seconds</p>`);
+        $("#modal .modal-message").html(`<h1 id='losing-message'>You lose!</h1><p>Your time was ${second} seconds</p>`);
         $("#modal").modal('show');
 
         return UNSAFE_MOVE;

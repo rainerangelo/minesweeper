@@ -50,7 +50,7 @@ h1 {
 }
 
 h2 {
-    color: #CF664F;
+    color: #ff5656;
     font-family: 'Circular Std Black';
     font-size: 1.5em;
 }
@@ -168,6 +168,10 @@ p {
     justify-content: center;
     padding-bottom: 1.5em;
     padding-top: 1.5em;
+}
+
+#losing-message {
+    color: #ff5656;
 }
 
 /* Extra small devices (phones, 600px and down) */
